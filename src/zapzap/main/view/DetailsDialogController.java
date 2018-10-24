@@ -24,7 +24,6 @@ public class DetailsDialogController {
 
     private Stage dialogStage;
     private Cliente cliente;
-    private boolean okClicked = false;
 
     /**
      * Inicializa a classe controlle. Este método é chamado automaticamente
@@ -55,15 +54,6 @@ public class DetailsDialogController {
         name.setText(cliente.getName());
         number.setText(cliente.getNumber());
         date.setText(cliente.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-    }
-
-    /**
-     * Retorna true se o usuário clicar OK,caso contrário false.
-     * 
-     * @return
-     */
-    public boolean isOkClicked() {
-        return okClicked;
     }
 
     

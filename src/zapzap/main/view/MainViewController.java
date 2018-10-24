@@ -3,6 +3,8 @@ package zapzap.main.view;
 import java.time.LocalDate;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -81,7 +83,38 @@ public class MainViewController {
 
 	@FXML
 	private void handleAdicionar() {
-		mainApp.getClienteData().add(new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue()));
+		if (nomeField.getText() != null && !nomeField.getText().isEmpty()) {
+			if (numberField.getText() != null && !numberField.getText().isEmpty()) {
+				if (datePicker.getValue() != null) {
+					mainApp.getClienteData().add(new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue()));
+					
+					nomeField.setText("");
+					numberField.setText("");
+					datePicker.setValue(null);
+				} else {
+					Alert alert = new Alert(AlertType.WARNING);
+		            alert.setTitle("Data não informado");
+		            alert.setHeaderText("A data não foi selecionada");
+		            alert.setContentText("Por favor, selecione a data.");
+
+		            alert.showAndWait();
+				}
+			} else {
+				Alert alert = new Alert(AlertType.WARNING);
+	            alert.setTitle("Numero não informado");
+	            alert.setHeaderText("O campo numero não foi preenchido");
+	            alert.setContentText("Por favor, preencha o campo numero com alguma informação.");
+
+	            alert.showAndWait();
+			}
+		} else {
+			Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Nome não informado");
+            alert.setHeaderText("O campo nome não foi preenchido");
+            alert.setContentText("Por favor, preencha o campo nome com alguma informação.");
+
+            alert.showAndWait();
+		}
 	}
 
 }
