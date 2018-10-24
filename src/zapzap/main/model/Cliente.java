@@ -1,5 +1,9 @@
 package zapzap.main.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import javafx.beans.property.ObjectProperty;
@@ -7,11 +11,16 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Cliente {
+public class Cliente implements Serializable{
 
-    private final StringProperty name;
-    private final StringProperty number;
-    private final ObjectProperty<LocalDate> data;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 282990227720526080L;
+	
+	private StringProperty name;
+    private StringProperty number;
+    private ObjectProperty<LocalDate> data;
 
     /**
      *  Construtor padrão.
@@ -67,5 +76,18 @@ public class Cliente {
     
     public ObjectProperty<LocalDate> dataProperty() {
         return data;
+    }
+    
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+        s.writeObject(name.get());
+        s.writeObject(number.get());
+        s.writeObject(data.get());
+    }
+    
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+        name = new SimpleStringProperty((String) s.readObject());
+        number = new SimpleStringProperty((String) s.readObject());
+        data = new SimpleObjectProperty<LocalDate>((LocalDate) s.readObject());
     }
 }

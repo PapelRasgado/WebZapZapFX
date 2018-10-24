@@ -1,15 +1,13 @@
 package zapzap.main;
 
-import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.prefs.Preferences;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.controlsfx.dialog.Dialogs;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -22,7 +20,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import zapzap.main.model.Cliente;
-import zapzap.main.model.ClienteListWrapper;
 import zapzap.main.view.DetailsDialogController;
 import zapzap.main.view.MainViewController;
 
@@ -30,6 +27,7 @@ public class MainApp extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
+	private String url = System.getProperty("user.home") + "//save.ser"; 
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 
@@ -38,20 +36,16 @@ public class MainApp extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("WebZapZap");
 		this.primaryStage.setResizable(false);
-		
+
 		this.primaryStage.getIcons().add(new Image("file:resources/images/logo.png"));
-		
+
 		initRootLayout();
 
-		showPersonOverview();
+		showClientOverview();
 	}
 
 	public MainApp() {
-		// Add some sample data
-		clienteData.add(new Cliente("Hans", "83996283690", LocalDate.now()));
-		clienteData.add(new Cliente("Hans2", "83954354354", LocalDate.now()));
-		clienteData.add(new Cliente("Hans3", "83992342690", LocalDate.now()));
-		clienteData.add(new Cliente("Hans4", "83996223690", LocalDate.now()));
+		read();
 	}
 
 	public ObservableList<Cliente> getClienteData() {
@@ -72,23 +66,24 @@ public class MainApp extends Application {
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			primaryStage.show();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Mostra o person overview dentro do root layout.
+	 * Mostra o cliente overview dentro do root layout.
 	 */
-	public void showPersonOverview() {
+	public void showClientOverview() {
 		try {
-			// Carrega o person overview.
+			// Carrega o cliente overview.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/MainView.fxml"));
-			AnchorPane personOverview = (AnchorPane) loader.load();
+			AnchorPane clienteOverview = (AnchorPane) loader.load();
 
-			// Define o person overview dentro do root layout.
-			rootLayout.setCenter(personOverview);
+			// Define o cliente overview dentro do root layout.
+			rootLayout.setCenter(clienteOverview);
 
 			// Dá ao controlador acesso à the main app.
 			MainViewController controller = loader.getController();
@@ -141,80 +136,47 @@ public class MainApp extends Application {
 			return false;
 		}
 	}
-	
-	public void loadPersonDataFromFile(File file) {
-	    try {
-	        JAXBContext context = JAXBContext
-	                .newInstance(ClienteListWrapper.class);
-	        Unmarshaller um = context.createUnmarshaller();
 
-	        // Reading XML from the file and unmarshalling.
-	        ClienteListWrapper wrapper = (ClienteListWrapper) um.unmarshal(file);
+	public void save() {
+		try {
 
-	        clienteData.clear();
-	        clienteData.addAll(wrapper.getPersons());
+			FileOutputStream fout = new FileOutputStream(url);
 
-	        // Save the file path to the registry.
-	        setPersonFilePath(file);
+			ObjectOutputStream oos = new ObjectOutputStream(fout);
 
-	    } catch (Exception e) { // catches ANY exception
-	        Dialogs.create()
-	                .title("Erro")
-	                .masthead("Não foi possível carregar dados do arquivo:\n" 
-	                          + file.getPath()).showException(e);
-	    }
+			oos.writeObject(new ArrayList<Cliente>(clienteData));
+
+			oos.close();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
-	/**
-	 * Salva os dados da pessoa atual no arquivo especificado.
-	 * 
-	 * @param file
-	 */
-	public void savePersonDataToFile(File file) {
-	    try {
-	        JAXBContext context = JAXBContext
-	                .newInstance(ClienteListWrapper.class);
-	        Marshaller m = context.createMarshaller();
-	        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+	@SuppressWarnings("unchecked")
+	public void read() {
+		try {
 
-	        // Envolvendo nossos dados da pessoa.
-	        ClienteListWrapper wrapper = new ClienteListWrapper();
-	        wrapper.setPersons(clienteData);
+			FileInputStream fin = new FileInputStream(url);
 
-	        // Enpacotando e salvando XML  no arquivo.
-	        m.marshal(wrapper, file);
+			ObjectInputStream ois = new ObjectInputStream(fin);
 
-	        // Saalva o caminho do arquivo no registro.
-	        setPersonFilePath(file);
-	    } catch (Exception e) { // catches ANY exception
-	        Dialogs.create().title("Erro")
-	                .masthead("Não foi possível salvar os dados do arquivo:\n" 
-	                          + file.getPath()).showException(e);
-	    }
+			List<Cliente> list = (List<Cliente>) ois.readObject();
+			clienteData = FXCollections.observableList(list);
+			
+			ois.close();
+
+		} catch (FileNotFoundException ex) {
+			save();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public File getPersonFilePath() {
-	    Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
-	    String filePath = prefs.get("filePath", null);
-	    if (filePath != null) {
-	        return new File(filePath);
-	    } else {
-	        return null;
-	    }
-	}
-
-	public void setPersonFilePath(File file) {
-	    Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
-	    if (file != null) {
-	        prefs.put("filePath", file.getPath());
-
-	        // Update the stage title.
-	        primaryStage.setTitle("AddressApp - " + file.getName());
-	    } else {
-	        prefs.remove("filePath");
-
-	        // Update the stage title.
-	        primaryStage.setTitle("AddressApp");
-	    }
+	@Override
+	public void stop() throws Exception {
+		save();
+		super.stop();
 	}
 }
