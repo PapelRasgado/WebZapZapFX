@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import zapzap.main.MainApp;
@@ -14,23 +15,20 @@ import zapzap.main.model.Cliente;
 public class MainViewController {
 
 	@FXML
-	private TableView<Cliente> personTable;
+	private TableView<Cliente> clienteTable;
 	@FXML
 	private TableColumn<Cliente, String> nameColumn;
 	@FXML
 	private TableColumn<Cliente, String> numberColumn;
 	@FXML
 	private TableColumn<Cliente, LocalDate> dateColumn;
-	
+
 	@FXML
 	private TextField nomeField;
 	@FXML
 	private TextField numberField;
 	@FXML
 	private DatePicker datePicker;
-	@FXML
-	private Button salvar;
-	
 
 	// Reference to the main application.
 	private MainApp mainApp;
@@ -51,6 +49,17 @@ public class MainViewController {
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty());
 		dateColumn.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
+
+		clienteTable.setRowFactory(tv -> {
+			TableRow<Cliente> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if (event.getClickCount() == 2 && (!row.isEmpty())) {
+					Cliente rowData = row.getItem();
+					showClienteDetails(rowData);
+				}
+			});
+			return row;
+		});
 	}
 
 	/**
@@ -63,7 +72,16 @@ public class MainViewController {
 		this.mainApp = mainApp;
 
 		// Adiciona os dados da observable list na tabela
-		personTable.setItems(mainApp.getClienteData());
+		clienteTable.setItems(mainApp.getClienteData());
+	}
+
+	private void showClienteDetails(Cliente cliente) {
+		mainApp.showClienteDetails(cliente);
+	}
+
+	@FXML
+	private void handleAdicionar() {
+		mainApp.getClienteData().add(new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue()));
 	}
 
 }
