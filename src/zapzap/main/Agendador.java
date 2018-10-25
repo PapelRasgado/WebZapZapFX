@@ -26,8 +26,8 @@ public class Agendador extends TimerTask {
 
 	@Override
 	public void run() {
+		System.out.println("Não começou");
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>(mainApp.getClienteData());
-
 		for (Cliente cliente : clientes) {
 			long dias = ChronoUnit.DAYS.between(LocalDate.now(), cliente.getData());
 			System.out.println(cliente.getName() + " " + dias);
