@@ -7,8 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -48,6 +54,18 @@ public class MainApp extends Application {
 
 	public MainApp() {
 		read();
+		System.setProperty("webdriver.gecko.driver", "C:\\chromedriver\\geckodriver.exe");
+		WebDriver driver = new FirefoxDriver();
+
+		driver.get("https://web.whatsapp.com/");
+		Timer timer = new Timer();
+        Agendador agendador = new Agendador(this, driver);
+        LocalDate date = LocalDate.now();
+        if(date.get(ChronoField.HOUR_OF_DAY) > 12) {
+        	date.plusDays(1);
+        }
+        date.plus
+        timer.schedule(agendador, 0, 1000);
 		
 	}
 
