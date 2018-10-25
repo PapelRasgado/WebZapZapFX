@@ -28,7 +28,7 @@
          </children>
       </GridPane>
       <Button layoutX="245.0" layoutY="120.0" mnemonicParsing="false" text="Editar..." AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="82.0" />
-      <Button layoutX="143.0" layoutY="120.0" mnemonicParsing="false" text="Remover..." AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="156.0" />
+      <Button layoutX="143.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleRemover" text="Remover..." AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="156.0" />
       <Button layoutX="245.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleVoltar" text="Voltar..." AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="6.0" />
    </children>
 </AnchorPane>

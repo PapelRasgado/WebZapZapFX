@@ -127,6 +127,7 @@ public class MainApp extends Application {
 			DetailsDialogController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setCliente(cliente);
+			controller.setMainApp(this);
 
 			// Mostra a janela e espera até o usuário fechar.
 			dialogStage.showAndWait();
@@ -182,4 +183,5 @@ public class MainApp extends Application {
 		save();
 		super.stop();
 	}
+	
 }
