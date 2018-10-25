@@ -1,6 +1,9 @@
 package zapzap.main.view;
 
 import java.time.LocalDate;
+import java.util.UUID;
+
+import com.sun.javafx.geom.AreaOp.EOWindOp;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -72,7 +75,7 @@ public class MainViewController {
 	 */
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-
+		
 		// Adiciona os dados da observable list na tabela
 		clienteTable.setItems(mainApp.getClienteData());
 	}
@@ -86,7 +89,9 @@ public class MainViewController {
 		if (nomeField.getText() != null && !nomeField.getText().isEmpty()) {
 			if (numberField.getText() != null && !numberField.getText().isEmpty()) {
 				if (datePicker.getValue() != null) {
-					mainApp.getClienteData().add(new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue()));
+					Cliente cli = new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue());
+					cli.setUuid(UUID.randomUUID().toString());
+					mainApp.getClienteData().add(cli);
 					
 					nomeField.setText("");
 					numberField.setText("");
