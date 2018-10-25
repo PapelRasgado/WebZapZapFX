@@ -18,7 +18,7 @@ public class Agendador extends TimerTask {
 
 	private MainApp mainApp;
 	private WebDriver driver;
-	
+
 	public Agendador(MainApp mainApp, WebDriver driver) {
 		this.mainApp = mainApp;
 		this.driver = driver;
@@ -26,33 +26,34 @@ public class Agendador extends TimerTask {
 
 	@Override
 	public void run() {
-		ArrayList<Cliente> clientes =  new ArrayList<Cliente>(mainApp.getClienteData());
-		
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>(mainApp.getClienteData());
+
 		for (Cliente cliente : clientes) {
 			long dias = ChronoUnit.DAYS.between(cliente.getData(), LocalDate.now());
 			if (dias < 2) {
 				System.out.println(cliente.getName() + " " + dias);
 				driver.get("https://web.whatsapp.com/send?phone=+55" + cliente.getNumber());
-				
+
 				while (true) {
 					try {
 						Thread.sleep(1000);
 						List<WebElement> text = driver.findElements(By.className("_2S1VP"));
-						if(text.size() > 0) {
-							System.out.println("passou");
+						if(driver.findElements(By.className("_3lLzD")).size()>0) {
+							System.out.println("Numero invalido");
+							break;
+						}
+						if (text.size() > 0) {
 							text.get(0).sendKeys(cliente.getMessage());
 							text.get(0).sendKeys(Keys.ENTER);
 							Thread.sleep(5000);
+							mainApp.getClienteData().remove(cliente);
 							break;
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-				mainApp.getClienteData().remove(cliente);
 			}
 		}
-		
 	}
-
 }

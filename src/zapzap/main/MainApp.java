@@ -83,8 +83,8 @@ public class MainApp extends Application {
 //        if(data.get(Calendar.HOUR_OF_DAY) > 12) {
 //        	data.add(Calendar.DATE, 1);
 //        }
-        data.set(Calendar.HOUR_OF_DAY, 14);
-        data.set(Calendar.MINUTE, 45);
+        data.set(Calendar.HOUR_OF_DAY, 15);
+        data.set(Calendar.MINUTE, 44);
         data.set(Calendar.SECOND, 0);
         timer.schedule(agendador, data.getTimeInMillis()-Calendar.getInstance().getTimeInMillis(), 86400);
 		
