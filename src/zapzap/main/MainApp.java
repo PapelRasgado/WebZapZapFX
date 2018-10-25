@@ -48,6 +48,7 @@ public class MainApp extends Application {
 
 	public MainApp() {
 		read();
+		
 	}
 
 	public ObservableList<Cliente> getClienteData() {
