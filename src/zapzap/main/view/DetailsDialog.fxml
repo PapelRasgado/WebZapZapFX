@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="155.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zapzap.main.view.DetailsDialogController">
+<AnchorPane prefHeight="186.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zapzap.main.view.DetailsDialogController">
    <children>
       <Label layoutX="14.0" layoutY="6.0" text="Dados do Cliente:" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="6.0" />
       <GridPane layoutX="14.0" layoutY="29.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="30.0">
@@ -17,6 +17,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Nome:" />
@@ -25,6 +26,8 @@
             <Label fx:id="name" text="Label" GridPane.columnIndex="1" />
             <Label fx:id="number" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="date" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Mensagem:" GridPane.rowIndex="3" />
+            <Label fx:id="message" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <Button layoutX="245.0" layoutY="120.0" mnemonicParsing="false" text="Editar..." AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="82.0" />

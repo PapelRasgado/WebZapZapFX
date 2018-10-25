@@ -13,6 +13,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import zapzap.main.MainApp;
 import zapzap.main.model.Cliente;
@@ -34,6 +35,8 @@ public class MainViewController {
 	private TextField numberField;
 	@FXML
 	private DatePicker datePicker;
+	@FXML
+	private TextArea messageArea;
 
 	// Reference to the main application.
 	private MainApp mainApp;
@@ -89,7 +92,8 @@ public class MainViewController {
 		if (nomeField.getText() != null && !nomeField.getText().isEmpty()) {
 			if (numberField.getText() != null && !numberField.getText().isEmpty()) {
 				if (datePicker.getValue() != null) {
-					Cliente cli = new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue());
+					String message = !messageArea.getText().isEmpty() ? messageArea.getText():"Voce eh gado";
+					Cliente cli = new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue(),message);
 					cli.setUuid(UUID.randomUUID().toString());
 					mainApp.getClienteData().add(cli);
 					

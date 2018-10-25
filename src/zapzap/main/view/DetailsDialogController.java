@@ -21,6 +21,8 @@ public class DetailsDialogController {
 	private Label number;
 	@FXML
 	private Label date;
+	@FXML
+	private Label message;
 
 	private Stage dialogStage;
 	private Cliente cliente;
@@ -55,6 +57,7 @@ public class DetailsDialogController {
 		name.setText(cliente.getName());
 		number.setText(cliente.getNumber());
 		date.setText(cliente.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		message.setText(cliente.messageProperty());
 	}
 
 	public void setMainApp(MainApp mainApp) {
