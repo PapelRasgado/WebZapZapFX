@@ -96,6 +96,7 @@ public class Cliente implements Serializable{
     }
     
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+    	uuid = (String) s.readObject();
         name = new SimpleStringProperty((String) s.readObject());
         number = new SimpleStringProperty((String) s.readObject());
         data = new SimpleObjectProperty<LocalDate>((LocalDate) s.readObject());
