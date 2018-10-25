@@ -7,13 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.time.LocalDate;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import javafx.application.Application;
@@ -58,16 +59,36 @@ public class MainApp extends Application {
 		WebDriver driver = new FirefoxDriver();
 
 		driver.get("https://web.whatsapp.com/");
+		new Thread() {
+			public void run() {
+				while (true) {
+					List<WebElement> elems = driver.findElements(By.className("_2EZ_m"));
+					if (elems.size() == 0) {
+						break;
+					} else {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			};
+		}.start();
+		
 		Timer timer = new Timer();
         Agendador agendador = new Agendador(this, driver);
-        LocalDate date = LocalDate.now();
-        if(date.get(ChronoField.HOUR_OF_DAY) > 12) {
-        	date.plusDays(1);
-        }
-        date.plus
-        timer.schedule(agendador, 0, 1000);
+        Calendar data = Calendar.getInstance();
+//        if(data.get(Calendar.HOUR_OF_DAY) > 12) {
+//        	data.add(Calendar.DATE, 1);
+//        }
+        data.set(Calendar.HOUR_OF_DAY, 14);
+        data.set(Calendar.MINUTE, 45);
+        data.set(Calendar.SECOND, 0);
+        timer.schedule(agendador, data.getTimeInMillis()-Calendar.getInstance().getTimeInMillis(), 86400);
 		
 	}
+
 
 	public ObservableList<Cliente> getClienteData() {
 		return clienteData;

@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import zapzap.main.model.Cliente;
+import zapzap.main.MainApp;
 
 public class Agendador extends TimerTask {
 
@@ -30,21 +31,24 @@ public class Agendador extends TimerTask {
 		for (Cliente cliente : clientes) {
 			long dias = ChronoUnit.DAYS.between(cliente.getData(), LocalDate.now());
 			if (dias < 2) {
+				System.out.println(cliente.getName() + " " + dias);
 				driver.get("https://web.whatsapp.com/send?phone=+55" + cliente.getNumber());
 				while (true) {
 					try {
-						Thread.sleep(100);
+						Thread.sleep(1000);
 						List<WebElement> text = driver.findElements(By.className("_2S1VP"));
-						text.get(0).sendKeys(cliente.getMessage());
-						text.get(0).sendKeys(Keys.ENTER);
-						break;
-					} catch (IndexOutOfBoundsException e) {
-						System.out.println("Conversa Carregando!");
+						if(text.size() > 0) {
+							System.out.println("passou");
+							text.get(0).sendKeys(cliente.getMessage());
+							text.get(0).sendKeys(Keys.ENTER);
+							Thread.sleep(5000);
+							break;
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-				clientes.remove(cliente);
+				mainApp.getClienteData().remove(cliente);
 			}
 		}
 		

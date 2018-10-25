@@ -18,8 +18,7 @@ public class Cliente implements Serializable {
 	 */
 	private static final long serialVersionUID = 282990227720526080L;
 
-	private String uuid;
-
+	private transient String uuid;
 	private transient StringProperty name;
 	private transient StringProperty number;
 	private transient ObjectProperty<LocalDate> data;
@@ -103,6 +102,7 @@ public class Cliente implements Serializable {
 
 	private void writeObject(ObjectOutputStream s) throws IOException {
 		s.defaultWriteObject();
+		s.writeObject(uuid);
 		s.writeObject(name.get());
 		s.writeObject(number.get());
 		s.writeObject(message.get());
