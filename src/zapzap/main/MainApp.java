@@ -76,6 +76,7 @@ public class MainApp extends Application {
 			};
 		}.start();
 		
+		
 		Timer timer = new Timer();
         Agendador agendador = new Agendador(this, driver);
         Calendar data = Calendar.getInstance();

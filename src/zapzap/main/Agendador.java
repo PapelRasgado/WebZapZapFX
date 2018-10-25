@@ -33,6 +33,7 @@ public class Agendador extends TimerTask {
 			if (dias < 2) {
 				System.out.println(cliente.getName() + " " + dias);
 				driver.get("https://web.whatsapp.com/send?phone=+55" + cliente.getNumber());
+				
 				while (true) {
 					try {
 						Thread.sleep(1000);
