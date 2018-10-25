@@ -29,16 +29,15 @@ public class Agendador extends TimerTask {
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>(mainApp.getClienteData());
 
 		for (Cliente cliente : clientes) {
-			long dias = ChronoUnit.DAYS.between(cliente.getData(), LocalDate.now());
-			if (dias < 2) {
-				System.out.println(cliente.getName() + " " + dias);
+			long dias = ChronoUnit.DAYS.between(LocalDate.now(), cliente.getData());
+			System.out.println(cliente.getName() + " " + dias);
+			if (dias <= 2) {
 				driver.get("https://web.whatsapp.com/send?phone=+55" + cliente.getNumber());
-
 				while (true) {
 					try {
 						Thread.sleep(1000);
 						List<WebElement> text = driver.findElements(By.className("_2S1VP"));
-						if(driver.findElements(By.className("_3lLzD")).size()>0) {
+						if(driver.findElements(By.className("_1WZqU")).size()>0) {
 							System.out.println("Numero invalido");
 							break;
 						}
