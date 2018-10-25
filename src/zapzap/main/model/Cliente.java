@@ -18,9 +18,9 @@ public class Cliente implements Serializable{
 	 */
 	private static final long serialVersionUID = 282990227720526080L;
 	
-	private StringProperty name;
-    private StringProperty number;
-    private ObjectProperty<LocalDate> data;
+	private transient StringProperty name;
+    private transient StringProperty number;
+    private transient ObjectProperty<LocalDate> data;
 
     /**
      *  Construtor padrão.

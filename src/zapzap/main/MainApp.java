@@ -1,5 +1,6 @@
 package zapzap.main;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -27,7 +28,7 @@ public class MainApp extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-	private String url = System.getProperty("user.home") + "//save.ser"; 
+	private String url = System.getProperty("user.home") + "//Documents//Webzapzap//save.ser"; 
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 
@@ -131,7 +132,7 @@ public class MainApp extends Application {
 			dialogStage.showAndWait();
 
 			return true;
-		} catch (IOException e) {
+		}catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -148,6 +149,9 @@ public class MainApp extends Application {
 
 			oos.close();
 
+		} catch(FileNotFoundException f) {
+			File diretorio = new File(System.getProperty("user.home") + "//Documents//Webzapzap");
+            diretorio.mkdir();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -169,7 +173,6 @@ public class MainApp extends Application {
 		} catch (FileNotFoundException ex) {
 			save();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
