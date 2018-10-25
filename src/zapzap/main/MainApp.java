@@ -28,6 +28,7 @@ public class MainApp extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
+	private MainViewController mainViewController;
 	private String url = System.getProperty("user.home") + "//Documents//Webzapzap//save.ser"; 
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
@@ -87,8 +88,8 @@ public class MainApp extends Application {
 			rootLayout.setCenter(clienteOverview);
 
 			// Dá ao controlador acesso à the main app.
-			MainViewController controller = loader.getController();
-			controller.setMainApp(this);
+			mainViewController = loader.getController();
+			mainViewController.setMainApp(this);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -182,6 +183,11 @@ public class MainApp extends Application {
 	public void stop() throws Exception {
 		save();
 		super.stop();
+	}
+
+	public void editar(Cliente cliente) {
+		mainViewController.editar(cliente);
+		
 	}
 	
 }

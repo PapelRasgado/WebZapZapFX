@@ -57,7 +57,7 @@ public class DetailsDialogController {
 		name.setText(cliente.getName());
 		number.setText(cliente.getNumber());
 		date.setText(cliente.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		message.setText(cliente.messageProperty());
+		message.setText(cliente.getMessage());
 	}
 
 	public void setMainApp(MainApp mainApp) {
@@ -72,6 +72,12 @@ public class DetailsDialogController {
 	@FXML
 	private void handleRemover() {
 		mainApp.getClienteData().remove(cliente);
+		dialogStage.close();
+	}
+	
+	@FXML
+	private void handleEdit() {
+		mainApp.editar(cliente);
 		dialogStage.close();
 	}
 	

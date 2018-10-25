@@ -26,7 +26,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="900.0">
                <children>
-                  <Label layoutY="6.0" text="Adicionar Cliente:" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="9.0" />
+                  <Label fx:id="titulo" layoutY="6.0" text="Adicionar Cliente:" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="9.0" />
                   <GridPane layoutX="8.0" layoutY="23.0" prefHeight="396.0" prefWidth="542.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="45.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="222.0" minWidth="10.0" prefWidth="87.0" />
@@ -45,9 +45,14 @@
                         <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="nomeField" GridPane.columnIndex="1" />
                         <TextField fx:id="numberField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Button mnemonicParsing="false" onAction="#handleAdicionar" text="Adicionar..." GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                        <Button fx:id="salvar" mnemonicParsing="false" onAction="#handleAdicionar" text="Adicionar..." GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                         <Label text="Mensagem:" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                         <TextArea fx:id="messageArea" prefHeight="68.0" prefWidth="455.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button fx:id="cancelar" mnemonicParsing="false" onAction="#handlerCancelar" text="Cancelar..." visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets right="100.0" />
+                           </GridPane.margin>
+                        </Button>
                      </children>
                   </GridPane>
                </children>

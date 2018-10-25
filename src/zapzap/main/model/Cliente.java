@@ -53,7 +53,7 @@ public class Cliente implements Serializable {
 		this.name.set(name);
 	}
 
-	public StringProperty getMenssage() {
+	public StringProperty messageProperty() {
 		return message;
 	}
 
@@ -65,7 +65,7 @@ public class Cliente implements Serializable {
 		return name;
 	}
 	
-	public String messageProperty() {
+	public String getMessage() {
 		return message.get();
 	}
 	
@@ -105,6 +105,7 @@ public class Cliente implements Serializable {
 		s.defaultWriteObject();
 		s.writeObject(name.get());
 		s.writeObject(number.get());
+		s.writeObject(message.get());
 		s.writeObject(data.get());
 	}
 
@@ -112,6 +113,7 @@ public class Cliente implements Serializable {
 		uuid = (String) s.readObject();
 		name = new SimpleStringProperty((String) s.readObject());
 		number = new SimpleStringProperty((String) s.readObject());
+		message = new SimpleStringProperty((String) s.readObject());
 		data = new SimpleObjectProperty<LocalDate>((LocalDate) s.readObject());
 	}
 }

@@ -3,13 +3,12 @@ package zapzap.main.view;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.sun.javafx.geom.AreaOp.EOWindOp;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -37,9 +36,16 @@ public class MainViewController {
 	private DatePicker datePicker;
 	@FXML
 	private TextArea messageArea;
+	@FXML
+	private Label titulo;
+	@FXML
+	private Button salvar;
+	@FXML 
+	private Button cancelar;
 
 	// Reference to the main application.
 	private MainApp mainApp;
+	private Cliente clienteEditar;
 
 	/**
 	 * O construtor. O construtor é chamado antes do método inicialize().
@@ -92,14 +98,20 @@ public class MainViewController {
 		if (nomeField.getText() != null && !nomeField.getText().isEmpty()) {
 			if (numberField.getText() != null && !numberField.getText().isEmpty()) {
 				if (datePicker.getValue() != null) {
-					String message = !messageArea.getText().isEmpty() ? messageArea.getText():"Voce eh gado";
-					Cliente cli = new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue(),message);
-					cli.setUuid(UUID.randomUUID().toString());
-					mainApp.getClienteData().add(cli);
+					Cliente cli = new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue(),!messageArea.getText().isEmpty() ? messageArea.getText():"Voce eh gado");
+					if (clienteEditar == null) {
+						cli.setUuid(UUID.randomUUID().toString());
+						mainApp.getClienteData().add(cli);
+						
+					} else {
+						mainApp.getClienteData().remove(clienteEditar);
+						mainApp.getClienteData().add(cli);
 					
-					nomeField.setText("");
-					numberField.setText("");
-					datePicker.setValue(null);
+						clienteEditar = null;
+					}
+					atualizarDados();
+					
+					
 				} else {
 					Alert alert = new Alert(AlertType.WARNING);
 		            alert.setTitle("Data não informado");
@@ -124,6 +136,38 @@ public class MainViewController {
 
             alert.showAndWait();
 		}
+		
+	}
+	
+	public void editar(Cliente cli) {
+		clienteEditar = cli;
+		atualizarDados();
+	}
+
+	private void atualizarDados() {
+		if (clienteEditar != null) {
+			titulo.setText("Editar Cliente:");
+			nomeField.setText(clienteEditar.getName());
+			numberField.setText(clienteEditar.getNumber());
+			datePicker.setValue(clienteEditar.getData());
+			messageArea.setText(clienteEditar.getMessage());
+			salvar.setText("Salvar...");
+			cancelar.setVisible(true);
+		} else {
+			titulo.setText("Adicionar Cliente:");
+			nomeField.setText("");
+			numberField.setText("");
+			messageArea.setText("");
+			datePicker.setValue(null);
+			salvar.setText("Adicionar...");
+			cancelar.setVisible(false);
+		}
+	}
+	
+	@FXML
+	private void handlerCancelar() {
+		clienteEditar = null;
+		atualizarDados();
 	}
 
 }
