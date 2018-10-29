@@ -57,7 +57,7 @@ public class Agendador extends TimerTask {
 							text.get(0).sendKeys(cliente.getMessage());
 							text.get(0).sendKeys(Keys.ENTER);
 							Thread.sleep(5000);
-							// mainApp.getClienteData().remove(cliente);
+							mainApp.getClienteData().remove(cliente);
 							break;
 						}
 					} catch (Exception e) {

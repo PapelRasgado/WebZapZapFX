@@ -80,11 +80,11 @@ public class MainApp extends Application {
 		Timer timer = new Timer();
         Agendador agendador = new Agendador(this, driver);
         Calendar data = Calendar.getInstance();
-//        if(data.get(Calendar.HOUR_OF_DAY) > 12) {
-//        	data.add(Calendar.DATE, 1);
-//        }
-        data.set(Calendar.HOUR_OF_DAY, 14);
-        data.set(Calendar.MINUTE, 50);
+        if(data.get(Calendar.HOUR_OF_DAY) > 12) {
+        	data.add(Calendar.DATE, 1);
+        }
+        data.set(Calendar.HOUR_OF_DAY, 12);
+        data.set(Calendar.MINUTE, 0);
         data.set(Calendar.SECOND, 0);
         timer.schedule(agendador, data.getTimeInMillis()-Calendar.getInstance().getTimeInMillis(), 86400000);
 		
