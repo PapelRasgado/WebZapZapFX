@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 import zapzap.main.model.Cliente;
 import zapzap.main.view.DetailsDialogController;
 import zapzap.main.view.MainViewController;
+import zapzap.main.view.RootViewController;
 
 public class MainApp extends Application {
 
@@ -55,7 +56,7 @@ public class MainApp extends Application {
 
 	public MainApp() {
 		read();
-		System.setProperty("webdriver.gecko.driver", "C:\\chromedriver\\geckodriver.exe");
+		System.setProperty("webdriver.gecko.driver", "resources/lib/geckodriver.exe");
 		WebDriver driver = new FirefoxDriver();
 
 		driver.get("https://web.whatsapp.com/");
@@ -105,6 +106,10 @@ public class MainApp extends Application {
 			loader.setLocation(MainApp.class.getResource("view/RootView.fxml"));
 			rootLayout = (BorderPane) loader.load();
 
+			RootViewController controller = loader.getController();
+			controller.setMainApp(this);
+			
+			
 			// Mostra a scene (cena) contendo o root layout.
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
@@ -162,8 +167,10 @@ public class MainApp extends Application {
 			dialogStage.setTitle("Detalhes Cliente");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
+			
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
+			dialogStage.getIcons().add(new Image("file:resources/images/logo.png"));
 
 			// Define a pessoa no controller.
 			DetailsDialogController controller = loader.getController();
