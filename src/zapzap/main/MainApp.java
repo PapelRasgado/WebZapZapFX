@@ -96,9 +96,6 @@ public class MainApp extends Application {
 		return clienteData;
 	}
 
-	/**
-	 * Inicializa o root layout (layout base).
-	 */
 	public void initRootLayout() {
 		try {
 			// Carrega o root layout do arquivo fxml.
@@ -119,10 +116,7 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * Mostra o cliente overview dentro do root layout.
-	 */
+	
 	public void showClientOverview() {
 		try {
 			// Carrega o cliente overview.
@@ -142,11 +136,6 @@ public class MainApp extends Application {
 		}
 	}
 
-	/**
-	 * Retorna o palco principal.
-	 * 
-	 * @return
-	 */
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}

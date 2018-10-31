@@ -8,11 +8,6 @@ import zapzap.main.MainApp;
 import zapzap.main.model.Cliente;
 import javafx.scene.control.Label;
 
-/**
- * Dialog para editar detalhes de uma pessoa.
- * 
- * @author Marco Jakob
- */
 public class DetailsDialogController {
 
 	@FXML
@@ -28,29 +23,15 @@ public class DetailsDialogController {
 	private Cliente cliente;
 	private MainApp mainApp;
 
-	/**
-	 * Inicializa a classe controlle. Este método é chamado automaticamente após o
-	 * arquivo fxml ter sido carregado.
-	 */
 	@FXML
 	private void initialize() {
 	}
 
-	/**
-	 * Define o palco deste dialog.
-	 * 
-	 * @param dialogStage
-	 */
 	public void setDialogStage(Stage dialogStage) {
 		this.dialogStage = dialogStage;
 		this.dialogStage.setResizable(false);
 	}
 
-	/**
-	 * Define a pessoa a ser editada no dialog.
-	 * 
-	 * @param person
-	 */
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 

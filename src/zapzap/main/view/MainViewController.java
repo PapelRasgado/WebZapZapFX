@@ -43,23 +43,14 @@ public class MainViewController {
 	@FXML 
 	private Button cancelar;
 
-	// Reference to the main application.
 	private MainApp mainApp;
 	private Cliente clienteEditar;
 
-	/**
-	 * O construtor. O construtor é chamado antes do método inicialize().
-	 */
 	public MainViewController() {
 	}
 
-	/**
-	 * Inicializa a classe controller. Este método é chamado automaticamente após o
-	 * arquivo fxml ter sido carregado.
-	 */
 	@FXML
 	private void initialize() {
-		// Inicializa a tablea de pessoa com duas colunas.
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty());
 		dateColumn.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
@@ -75,17 +66,10 @@ public class MainViewController {
 			return row;
 		});
 	}
-
-	/**
-	 * É chamado pela aplicação principal para dar uma referência de volta a si
-	 * mesmo.
-	 * 
-	 * @param mainApp
-	 */
+	
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 		
-		// Adiciona os dados da observable list na tabela
 		clienteTable.setItems(mainApp.getClienteData());
 	}
 

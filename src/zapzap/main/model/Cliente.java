@@ -13,9 +13,6 @@ import javafx.beans.property.StringProperty;
 
 public class Cliente implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 282990227720526080L;
 
 	private transient String uuid;
@@ -24,19 +21,10 @@ public class Cliente implements Serializable {
 	private transient ObjectProperty<LocalDate> data;
 	private transient StringProperty message;
 
-	/**
-	 * Construtor padrão.
-	 */
 	public Cliente() {
 		this(null, null, null,null);
 	}
 
-	/**
-	 * Construtor com alguns dados iniciais.
-	 * 
-	 * @param firstName Primeiro nome da Pessoa.
-	 * @param lastName  Sobrenome da Pessoa.
-	 */
 	public Cliente(String name, String number, LocalDate data, String message) {
 		this.name = new SimpleStringProperty(name);
 		this.number = new SimpleStringProperty(number);
