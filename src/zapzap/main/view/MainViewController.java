@@ -29,6 +29,15 @@ public class MainViewController {
 	private TableColumn<Cliente, LocalDate> dateColumn;
 
 	@FXML
+	private TableView<Cliente> clienteTableFail;
+	@FXML
+	private TableColumn<Cliente, String> nameColumnFail;
+	@FXML
+	private TableColumn<Cliente, String> numberColumnFail;
+	@FXML
+	private TableColumn<Cliente, LocalDate> dateColumnFail;
+	
+	@FXML
 	private TextField nomeField;
 	@FXML
 	private TextField numberField;
@@ -54,6 +63,10 @@ public class MainViewController {
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty());
 		dateColumn.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
+		
+		nameColumnFail.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+		numberColumnFail.setCellValueFactory(cellData -> cellData.getValue().numberProperty());
+		dateColumnFail.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
 
 		clienteTable.setRowFactory(tv -> {
 			TableRow<Cliente> row = new TableRow<>();

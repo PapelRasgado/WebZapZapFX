@@ -41,6 +41,8 @@ public class Agendador extends TimerTask {
 							WebElement aviso = driver.findElement(By.xpath("html/body/div/div/span[3]/div/span/div/div/div/div/div/div"));
 							if (aviso != null) {
 								if (aviso.getText().contains("url é inválido")) {
+									mainApp.getClienteFailData().add(cliente);
+									mainApp.getClienteData().remove(cliente);
 									System.out.println(driver
 											.findElement(
 													By.xpath("html/body/div/div/span[3]/div/span/div/div/div/div/div/div"))

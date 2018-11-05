@@ -37,9 +37,11 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	private MainViewController mainViewController;
-	private String url = System.getProperty("user.home") + "//Documents//Webzapzap//save.ser"; 
+	private String url = System.getProperty("user.home") + "//Documents//Webzapzap//save.ser";
+	private String urlFail = System.getProperty("user.home") + "//Documents//Webzapzap//saveFail.ser";
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
+	private ObservableList<Cliente> clienteFailData = FXCollections.observableArrayList();
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -52,6 +54,10 @@ public class MainApp extends Application {
 		initRootLayout();
 
 		showClientOverview();
+	}
+	
+	public ObservableList<Cliente> getClienteFailData() {
+		return clienteFailData;
 	}
 
 	public MainApp() {
@@ -81,11 +87,11 @@ public class MainApp extends Application {
 		Timer timer = new Timer();
         Agendador agendador = new Agendador(this, driver);
         Calendar data = Calendar.getInstance();
-        if(data.get(Calendar.HOUR_OF_DAY) > 12) {
-        	data.add(Calendar.DATE, 1);
-        }
-        data.set(Calendar.HOUR_OF_DAY, 12);
-        data.set(Calendar.MINUTE, 0);
+//        if(data.get(Calendar.HOUR_OF_DAY) > 12) {
+//        	data.add(Calendar.DATE, 1);
+//        }
+        data.set(Calendar.HOUR_OF_DAY, 17);
+        data.set(Calendar.MINUTE, 14);
         data.set(Calendar.SECOND, 0);
         timer.schedule(agendador, data.getTimeInMillis()-Calendar.getInstance().getTimeInMillis(), 86400000);
 		
@@ -187,6 +193,14 @@ public class MainApp extends Application {
 			oos.writeObject(new ArrayList<Cliente>(clienteData));
 
 			oos.close();
+			
+			fout = new FileOutputStream(urlFail);
+			
+			ObjectOutputStream oosFail = new ObjectOutputStream(fout);
+			
+			oosFail.writeObject(new ArrayList<Cliente>(clienteFailData));
+			
+			oosFail.close();
 
 		} catch(FileNotFoundException f) {
 			File diretorio = new File(System.getProperty("user.home") + "//Documents//Webzapzap");
@@ -208,6 +222,15 @@ public class MainApp extends Application {
 			clienteData = FXCollections.observableList(list);
 			
 			ois.close();
+			
+			fin = new FileInputStream(urlFail);
+			
+			ObjectInputStream oisFail = new ObjectInputStream(fin);
+
+			List<Cliente> listFail = (List<Cliente>) oisFail.readObject();
+			clienteData = FXCollections.observableList(listFail);
+			
+			oisFail.close();
 
 		} catch (FileNotFoundException ex) {
 			save();
