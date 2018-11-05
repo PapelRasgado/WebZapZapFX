@@ -84,6 +84,7 @@ public class MainViewController {
 		this.mainApp = mainApp;
 		
 		clienteTable.setItems(mainApp.getClienteData());
+		clienteTableFail.setItems(mainApp.getClienteFailData());
 	}
 
 	private void showClienteDetails(Cliente cliente) {
