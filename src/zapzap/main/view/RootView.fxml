@@ -13,6 +13,7 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleSave" text="Salvar" />
                   <MenuItem mnemonicParsing="false" onAction="#handleDelete" text="Deletar" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleReset" text="Resetar Falhas" />
                </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Sobre">

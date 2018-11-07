@@ -44,4 +44,9 @@ public class RootViewController {
         alert.setHeaderText("Esse programa foi desenvolvido pelos alunos do IFPB João\nPaulo Dantas e Eniedson Júnior para a empresa Dantas distribuidora.");
         alert.showAndWait();
 	}
+	
+	@FXML
+	private void handleReset() {
+		mainApp.getClienteFailData().clear();
+	}
 }
