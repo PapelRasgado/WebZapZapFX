@@ -37,8 +37,7 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	private MainViewController mainViewController;
-	private String url = System.getProperty("user.home") + "//Documents//Webzapzap//save.ser";
-	private String urlFail = System.getProperty("user.home") + "//Documents//Webzapzap//saveFail.ser";
+	private String url = System.getProperty("user.home") + "//Documents//Webzapzap";
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 	private ObservableList<Cliente> clienteFailData = FXCollections.observableArrayList();
@@ -87,11 +86,11 @@ public class MainApp extends Application {
 		Timer timer = new Timer();
         Agendador agendador = new Agendador(this, driver);
         Calendar data = Calendar.getInstance();
-//        if(data.get(Calendar.HOUR_OF_DAY) > 12) {
-//        	data.add(Calendar.DATE, 1);
-//        }
-        data.set(Calendar.HOUR_OF_DAY, 17);
-        data.set(Calendar.MINUTE, 14);
+        if(data.get(Calendar.HOUR_OF_DAY) > 12) {
+        	data.add(Calendar.DATE, 1);
+        }
+        data.set(Calendar.HOUR_OF_DAY, 12);
+        data.set(Calendar.MINUTE, 0);
         data.set(Calendar.SECOND, 0);
         timer.schedule(agendador, data.getTimeInMillis()-Calendar.getInstance().getTimeInMillis(), 86400000);
 		
@@ -193,7 +192,7 @@ public class MainApp extends Application {
 	public void save() {
 		try {
 
-			FileOutputStream fout = new FileOutputStream(url);
+			FileOutputStream fout = new FileOutputStream(url + "/save.ser");
 
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
 
@@ -201,7 +200,7 @@ public class MainApp extends Application {
 
 			oos.close();
 			
-			fout = new FileOutputStream(urlFail);
+			fout = new FileOutputStream(url + "/savefail.ser");
 			
 			ObjectOutputStream oosFail = new ObjectOutputStream(fout);
 			
@@ -210,7 +209,7 @@ public class MainApp extends Application {
 			oosFail.close();
 
 		} catch(FileNotFoundException f) {
-			File diretorio = new File(System.getProperty("user.home") + "//Documents//Webzapzap");
+			File diretorio = new File(url);
             diretorio.mkdir();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -221,7 +220,7 @@ public class MainApp extends Application {
 	public void read() {
 		try {
 
-			FileInputStream fin = new FileInputStream(url);
+			FileInputStream fin = new FileInputStream(url + "/save.ser");
 
 			ObjectInputStream ois = new ObjectInputStream(fin);
 
@@ -230,12 +229,12 @@ public class MainApp extends Application {
 			
 			ois.close();
 			
-			fin = new FileInputStream(urlFail);
+			fin = new FileInputStream(url + "/savefail.ser");
 			
 			ObjectInputStream oisFail = new ObjectInputStream(fin);
 
 			List<Cliente> listFail = (List<Cliente>) oisFail.readObject();
-			clienteData = FXCollections.observableList(listFail);
+			clienteFailData = FXCollections.observableList(listFail);
 			
 			oisFail.close();
 
@@ -245,10 +244,13 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+
+
 	
 	@Override
 	public void stop() throws Exception {
 		save();
+		System.exit(0);
 		super.stop();
 	}
 
