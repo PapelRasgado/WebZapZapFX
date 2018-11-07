@@ -22,6 +22,7 @@ public class DetailsDialogController {
 	private Stage dialogStage;
 	private Cliente cliente;
 	private MainApp mainApp;
+	private boolean tipo;
 
 	@FXML
 	private void initialize() {
@@ -30,6 +31,10 @@ public class DetailsDialogController {
 	public void setDialogStage(Stage dialogStage) {
 		this.dialogStage = dialogStage;
 		this.dialogStage.setResizable(false);
+	}
+	
+	public void setTipo(boolean tipo) {
+		this.tipo = tipo;
 	}
 
 	public void setCliente(Cliente cliente) {
@@ -52,13 +57,18 @@ public class DetailsDialogController {
 
 	@FXML
 	private void handleRemover() {
-		mainApp.getClienteData().remove(cliente);
+		if (tipo) {
+			mainApp.getClienteData().remove(cliente);
+		} else {
+			mainApp.getClienteFailData().remove(cliente);
+		}
+		
 		dialogStage.close();
 	}
 	
 	@FXML
 	private void handleEdit() {
-		mainApp.editar(cliente);
+		mainApp.editar(cliente, tipo);
 		dialogStage.close();
 	}
 	

@@ -54,6 +54,7 @@ public class MainViewController {
 
 	private MainApp mainApp;
 	private Cliente clienteEditar;
+	private Boolean tipoEditar;
 
 	public MainViewController() {
 	}
@@ -73,7 +74,18 @@ public class MainViewController {
 			row.setOnMouseClicked(event -> {
 				if (event.getClickCount() == 2 && (!row.isEmpty())) {
 					Cliente rowData = row.getItem();
-					showClienteDetails(rowData);
+					showClienteDetails(rowData, true);
+				}
+			});
+			return row;
+		});
+		
+		clienteTableFail.setRowFactory(tv -> {
+			TableRow<Cliente> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if (event.getClickCount() == 2 && (!row.isEmpty())) {
+					Cliente rowData = row.getItem();
+					showClienteDetails(rowData, false);
 				}
 			});
 			return row;
@@ -87,8 +99,8 @@ public class MainViewController {
 		clienteTableFail.setItems(mainApp.getClienteFailData());
 	}
 
-	private void showClienteDetails(Cliente cliente) {
-		mainApp.showClienteDetails(cliente);
+	private void showClienteDetails(Cliente cliente, boolean teste) {
+		mainApp.showClienteDetails(cliente, teste);
 	}
 
 	@FXML
@@ -102,10 +114,16 @@ public class MainViewController {
 						mainApp.getClienteData().add(cli);
 						
 					} else {
-						mainApp.getClienteData().remove(clienteEditar);
-						mainApp.getClienteData().add(cli);
+						if (tipoEditar) {
+							mainApp.getClienteData().remove(clienteEditar);
+							mainApp.getClienteData().add(cli);
+						} else {
+							mainApp.getClienteFailData().remove(clienteEditar);
+							mainApp.getClienteData().add(cli);
+						}
 					
 						clienteEditar = null;
+						tipoEditar = null;
 					}
 					atualizarDados();
 					
@@ -137,14 +155,19 @@ public class MainViewController {
 		
 	}
 	
-	public void editar(Cliente cli) {
+	public void editar(Cliente cli, boolean tipo) {
 		clienteEditar = cli;
+		tipoEditar = tipo;
 		atualizarDados();
 	}
 
 	private void atualizarDados() {
 		if (clienteEditar != null) {
-			titulo.setText("Editar Cliente:");
+			if (tipoEditar) {
+				titulo.setText("Editar Cliente:");
+			} else {
+				titulo.setText("Editar Falha:");
+			}
 			nomeField.setText(clienteEditar.getName());
 			numberField.setText(clienteEditar.getNumber());
 			datePicker.setValue(clienteEditar.getData());
@@ -165,6 +188,7 @@ public class MainViewController {
 	@FXML
 	private void handlerCancelar() {
 		clienteEditar = null;
+		tipoEditar = null;
 		atualizarDados();
 	}
 

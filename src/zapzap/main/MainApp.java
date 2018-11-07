@@ -37,7 +37,8 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	private MainViewController mainViewController;
-	private String url = System.getProperty("user.home") + "//Documents//Webzapzap";
+	private String url = System.getProperty("user.home") + "//Documents//Webzapzap//save.ser";
+	private String urlFail = System.getProperty("user.home") + "//Documents//Webzapzap//saveFail.ser";
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 	private ObservableList<Cliente> clienteFailData = FXCollections.observableArrayList();
@@ -90,7 +91,7 @@ public class MainApp extends Application {
 //        	data.add(Calendar.DATE, 1);
 //        }
         data.set(Calendar.HOUR_OF_DAY, 17);
-        data.set(Calendar.MINUTE, 15);
+        data.set(Calendar.MINUTE, 14);
         data.set(Calendar.SECOND, 0);
         timer.schedule(agendador, data.getTimeInMillis()-Calendar.getInstance().getTimeInMillis(), 86400000);
 		
@@ -103,6 +104,8 @@ public class MainApp extends Application {
 
 	public void initRootLayout() {
 		try {
+			
+			// Carrega o root layout do arquivo fxml.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/RootView.fxml"));
 			rootLayout = (BorderPane) loader.load();
@@ -111,6 +114,7 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			
 			
+			// Mostra a scene (cena) contendo o root layout.
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -122,12 +126,15 @@ public class MainApp extends Application {
 	
 	public void showClientOverview() {
 		try {
+			// Carrega o cliente overview.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/MainView.fxml"));
 			AnchorPane clienteOverview = (AnchorPane) loader.load();
 
+			// Define o cliente overview dentro do root layout.
 			rootLayout.setCenter(clienteOverview);
 
+			// Dá ao controlador acesso à the main app.
 			mainViewController = loader.getController();
 			mainViewController.setMainApp(this);
 
@@ -144,14 +151,21 @@ public class MainApp extends Application {
 		launch(args);
 	}
 
-	public boolean showClienteDetails(Cliente cliente) {
+	public boolean showClienteDetails(Cliente cliente, boolean teste) {
 		try {
+			// Carrega o arquivo fxml e cria um novo stage para a janela popup.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/DetailsDialog.fxml"));
 			AnchorPane page = (AnchorPane) loader.load();
 
+			// Cria o palco dialogStage.
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Detalhes Cliente");
+			if (teste) {
+				dialogStage.setTitle("Detalhes Cliente");
+			} else {
+				dialogStage.setTitle("Detalhes Falha");
+			}
+			
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
 			
@@ -159,11 +173,14 @@ public class MainApp extends Application {
 			dialogStage.setScene(scene);
 			dialogStage.getIcons().add(new Image("file:resources/images/logo.png"));
 
+			// Define a pessoa no controller.
 			DetailsDialogController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setCliente(cliente);
 			controller.setMainApp(this);
+			controller.setTipo(teste);
 
+			// Mostra a janela e espera até o usuário fechar.
 			dialogStage.showAndWait();
 
 			return true;
@@ -176,7 +193,7 @@ public class MainApp extends Application {
 	public void save() {
 		try {
 
-			FileOutputStream fout = new FileOutputStream(url + "/save.ser");
+			FileOutputStream fout = new FileOutputStream(url);
 
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
 
@@ -184,7 +201,7 @@ public class MainApp extends Application {
 
 			oos.close();
 			
-			fout = new FileOutputStream(url + "/savefail.ser");
+			fout = new FileOutputStream(urlFail);
 			
 			ObjectOutputStream oosFail = new ObjectOutputStream(fout);
 			
@@ -193,7 +210,7 @@ public class MainApp extends Application {
 			oosFail.close();
 
 		} catch(FileNotFoundException f) {
-			File diretorio = new File(url);
+			File diretorio = new File(System.getProperty("user.home") + "//Documents//Webzapzap");
             diretorio.mkdir();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -204,7 +221,7 @@ public class MainApp extends Application {
 	public void read() {
 		try {
 
-			FileInputStream fin = new FileInputStream(url + "/save.ser");
+			FileInputStream fin = new FileInputStream(url);
 
 			ObjectInputStream ois = new ObjectInputStream(fin);
 
@@ -213,12 +230,12 @@ public class MainApp extends Application {
 			
 			ois.close();
 			
-			fin = new FileInputStream(url + "/savefail.ser");
+			fin = new FileInputStream(urlFail);
 			
 			ObjectInputStream oisFail = new ObjectInputStream(fin);
 
 			List<Cliente> listFail = (List<Cliente>) oisFail.readObject();
-			clienteFailData = FXCollections.observableList(listFail);
+			clienteData = FXCollections.observableList(listFail);
 			
 			oisFail.close();
 
@@ -235,8 +252,8 @@ public class MainApp extends Application {
 		super.stop();
 	}
 
-	public void editar(Cliente cliente) {
-		mainViewController.editar(cliente);
+	public void editar(Cliente cliente, boolean tipo) {
+		mainViewController.editar(cliente, tipo);
 		
 	}
 	
