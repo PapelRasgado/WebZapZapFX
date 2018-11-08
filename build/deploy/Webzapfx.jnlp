@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Webzapfx.jar" size="16005" download="eager" />
+    <jar href="Webzapfx.jar" size="15946" download="eager" />
     <jar href="libs\byte-buddy-1.8.15.jar" size="2987269" download="eager" />
     <jar href="libs\client-combined-3.14.0-sources.jar" size="526949" download="eager" />
     <jar href="libs\client-combined-3.14.0.jar" size="1522454" download="eager" />
