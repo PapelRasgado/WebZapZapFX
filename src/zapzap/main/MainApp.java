@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -27,6 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.thegreshams.firebase4j.error.FirebaseException;
 import net.thegreshams.firebase4j.service.Firebase;
 import zapzap.main.model.Cliente;
 import zapzap.main.view.DetailsDialogController;
@@ -42,7 +44,6 @@ public class MainApp extends Application {
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 	private ObservableList<Cliente> clienteFailData = FXCollections.observableArrayList();
-	private Firebase database;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -51,7 +52,6 @@ public class MainApp extends Application {
 		this.primaryStage.setResizable(false);
 
 		this.primaryStage.getIcons().add(new Image("file:resources/images/logo.png"));
-
 		initRootLayout();
 
 		showClientOverview();
@@ -69,18 +69,30 @@ public class MainApp extends Application {
 		driver.get("https://web.whatsapp.com/");
 		new Thread() {
 			public void run() {
-				while (true) {
-					List<WebElement> elems = driver.findElements(By.className("_2EZ_m"));
-					if (elems.size() == 0) {
-						break;
-					} else {
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+				
+				try {
+					Firebase database = new Firebase("https://testando-18461.firebaseio.com/");
+					String id = database.get("id-qr").getRawBody();
+					id = id.substring(1, id.length());
+					while (true) {
+						List<WebElement> elems = driver.findElements(By.className(id));
+						if (elems.size() == 0) {
+							break;
+						} else {
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
 						}
 					}
+				} catch (FirebaseException e1) {
+					e1.printStackTrace();
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+				
 			};
 		}.start();
 		
