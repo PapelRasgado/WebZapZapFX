@@ -27,6 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.thegreshams.firebase4j.service.Firebase;
 import zapzap.main.model.Cliente;
 import zapzap.main.view.DetailsDialogController;
 import zapzap.main.view.MainViewController;
@@ -41,7 +42,8 @@ public class MainApp extends Application {
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 	private ObservableList<Cliente> clienteFailData = FXCollections.observableArrayList();
-
+	private Firebase database;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
