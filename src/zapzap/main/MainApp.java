@@ -71,9 +71,9 @@ public class MainApp extends Application {
 			public void run() {
 				
 				try {
-					Firebase database = new Firebase("https://testando-18461.firebaseio.com/");
+					Firebase database = new Firebase("https://webzapzap-ade09.firebaseio.com/");
 					String id = database.get("id-qr").getRawBody();
-					id = id.substring(1, id.length());
+					id = id.substring(1, id.length()-1);
 					while (true) {
 						List<WebElement> elems = driver.findElements(By.className(id));
 						if (elems.size() == 0) {

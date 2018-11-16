@@ -17,6 +17,12 @@
 			<artifactId>firebase4j</artifactId>
 			<version>8d16c12934</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -35,6 +41,14 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.zenjava</groupId>
+				<artifactId>javafx-maven-plugin</artifactId>
+				<version>8.8.3</version>
+				<configuration>
+					<mainClass>zapzap.main.MainApp</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

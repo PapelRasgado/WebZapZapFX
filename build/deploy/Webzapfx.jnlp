@@ -8,31 +8,29 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Webzapfx.jar" size="15946" download="eager" />
+    <jar href="Webzapfx.jar" size="18174" download="eager" />
+    <jar href="libs\activation-1.1.jar" size="62983" download="eager" />
     <jar href="libs\byte-buddy-1.8.15.jar" size="2987269" download="eager" />
     <jar href="libs\client-combined-3.14.0-sources.jar" size="526949" download="eager" />
     <jar href="libs\client-combined-3.14.0.jar" size="1522454" download="eager" />
     <jar href="libs\commons-codec-1.10.jar" size="284184" download="eager" />
+    <jar href="libs\commons-codec-1.6.jar" size="232771" download="eager" />
     <jar href="libs\commons-exec-1.3.jar" size="54423" download="eager" />
+    <jar href="libs\commons-logging-1.1.3.jar" size="62050" download="eager" />
     <jar href="libs\commons-logging-1.2.jar" size="61829" download="eager" />
     <jar href="libs\controlsfx-8.0.6_20.jar" size="856539" download="eager" />
+    <jar href="libs\firebase4j-8d16c12934.jar" size="15725" download="eager" />
     <jar href="libs\guava-25.0-jre.jar" size="2738171" download="eager" />
+    <jar href="libs\httpclient-4.3.6.jar" size="592008" download="eager" />
     <jar href="libs\httpclient-4.5.5.jar" size="766123" download="eager" />
+    <jar href="libs\httpcore-4.3.3.jar" size="282793" download="eager" />
     <jar href="libs\httpcore-4.4.9.jar" size="325500" download="eager" />
+    <jar href="libs\jackson-core-asl-1.9.5.jar" size="228417" download="eager" />
+    <jar href="libs\jackson-mapper-asl-1.9.5.jar" size="778983" download="eager" />
+    <jar href="libs\log4j-1.2.16.jar" size="481535" download="eager" />
+    <jar href="libs\mail-1.4.jar" size="388864" download="eager" />
     <jar href="libs\okhttp-3.10.0.jar" size="412117" download="eager" />
     <jar href="libs\okio-1.14.1.jar" size="85773" download="eager" />
-    <jar href="resources\lib\byte-buddy-1.8.15.jar" size="2987269" download="eager" />
-    <jar href="resources\lib\client-combined-3.14.0-sources.jar" size="526949" download="eager" />
-    <jar href="resources\lib\client-combined-3.14.0.jar" size="1522454" download="eager" />
-    <jar href="resources\lib\commons-codec-1.10.jar" size="284184" download="eager" />
-    <jar href="resources\lib\commons-exec-1.3.jar" size="54423" download="eager" />
-    <jar href="resources\lib\commons-logging-1.2.jar" size="61829" download="eager" />
-    <jar href="resources\lib\controlsfx-8.0.6_20.jar" size="856539" download="eager" />
-    <jar href="resources\lib\guava-25.0-jre.jar" size="2738171" download="eager" />
-    <jar href="resources\lib\httpclient-4.5.5.jar" size="766123" download="eager" />
-    <jar href="resources\lib\httpcore-4.4.9.jar" size="325500" download="eager" />
-    <jar href="resources\lib\okhttp-3.10.0.jar" size="412117" download="eager" />
-    <jar href="resources\lib\okio-1.14.1.jar" size="85773" download="eager" />
   </resources>
   <jfx:javafx-desc  width="0" height="0" main-class="zapzap.main.MainApp"  name="WebZapZap" />
   <update check="background"/>
