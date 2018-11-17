@@ -13,17 +13,27 @@ public class RootViewController {
 
 	private MainApp mainApp;
 
+	/**
+	 * Define mainApp
+	 */
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 	}
 
+	/**
+	 * Salva a lista de cliente
+	 */
 	@FXML
 	private void handleSave() {
 		mainApp.save();
 	}
 
+	/**
+	 * Limpa a lista de clientes
+	 */
 	@FXML
 	private void handleDelete() {
+		//Exibe um aviso para confirmação da ação
 		ButtonType yes = new ButtonType("SIM", ButtonData.YES);
 		ButtonType no = new ButtonType("NÃo", ButtonData.NO);
 		Alert alerta = new Alert(AlertType.WARNING, null,yes, no);
@@ -37,6 +47,9 @@ public class RootViewController {
 		}
 	}
 
+	/**
+	 * Exibe uma tela com as informações sobre o programa
+	 */
 	@FXML
 	private void handleAbolt() {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -45,6 +58,9 @@ public class RootViewController {
         alert.showAndWait();
 	}
 	
+	/**
+	 * Limpa a lista de falhas
+	 */
 	@FXML
 	private void handleReset() {
 		mainApp.getClienteFailData().clear();
