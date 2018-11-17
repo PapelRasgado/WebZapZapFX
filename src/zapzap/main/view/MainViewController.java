@@ -108,7 +108,7 @@ public class MainViewController {
 		if (nomeField.getText() != null && !nomeField.getText().isEmpty()) {
 			if (numberField.getText() != null && !numberField.getText().isEmpty()) {
 				if (datePicker.getValue() != null) {
-					Cliente cli = new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue(),!messageArea.getText().isEmpty() ? messageArea.getText():"Voce eh gado");
+					Cliente cli = new Cliente(nomeField.getText(), numberField.getText(), datePicker.getValue(),!messageArea.getText().isEmpty() ? messageArea.getText():"*Dantas Importadora*\nFalta menos de 5 dias para o vencimento de sua fatura!");
 					if (clienteEditar == null) {
 						cli.setUuid(UUID.randomUUID().toString());
 						mainApp.getClienteData().add(cli);

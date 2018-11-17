@@ -40,7 +40,12 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	private MainViewController mainViewController;
+	
+	//Url para o local aonde o arquivo com as informações são salvos.
 	private String url = System.getProperty("user.home") + "//Documents//Webzapzap";
+	
+	//Driver do Selenium utilizado para manipular o whatsweb
+	private WebDriver driver;
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 	private ObservableList<Cliente> clienteFailData = FXCollections.observableArrayList();
@@ -64,7 +69,7 @@ public class MainApp extends Application {
 	public MainApp() {
 		read();
 		System.setProperty("webdriver.gecko.driver", "resources/lib/geckodriver.exe");
-		WebDriver driver = new FirefoxDriver();
+		driver = new FirefoxDriver();
 
 		driver.get("https://web.whatsapp.com/");
 		new Thread() {
@@ -89,7 +94,6 @@ public class MainApp extends Application {
 				} catch (FirebaseException e1) {
 					e1.printStackTrace();
 				} catch (UnsupportedEncodingException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -100,15 +104,13 @@ public class MainApp extends Application {
 		Timer timer = new Timer();
         Agendador agendador = new Agendador(this, driver);
         Calendar data = Calendar.getInstance();
- //       if(data.get(Calendar.HOUR_OF_DAY) > 12) {
- //       	data.add(Calendar.DATE, 1);
- //       }
-        //data.set(Calendar.HOUR_OF_DAY, 15);
-        //data.set(Calendar.MINUTE, 35);
-        data.add(Calendar.MINUTE, 5);
+        if(data.get(Calendar.HOUR_OF_DAY) > 12) {
+        	data.add(Calendar.DATE, 1);
+        }
+        data.set(Calendar.HOUR_OF_DAY, 12);
+        data.set(Calendar.MINUTE, 00);
         data.set(Calendar.SECOND, 0);
-        //86400000
-        timer.schedule(agendador, data.getTimeInMillis()-Calendar.getInstance().getTimeInMillis(), 120000);
+        timer.schedule(agendador, data.getTimeInMillis()-Calendar.getInstance().getTimeInMillis(), 86400000);
 		
 	}
 
@@ -120,7 +122,6 @@ public class MainApp extends Application {
 	public void initRootLayout() {
 		try {
 			
-			// Carrega o root layout do arquivo fxml.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/RootView.fxml"));
 			rootLayout = (BorderPane) loader.load();
@@ -129,7 +130,6 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			
 			
-			// Mostra a scene (cena) contendo o root layout.
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -141,15 +141,12 @@ public class MainApp extends Application {
 	
 	public void showClientOverview() {
 		try {
-			// Carrega o cliente overview.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/MainView.fxml"));
 			AnchorPane clienteOverview = (AnchorPane) loader.load();
 
-			// Define o cliente overview dentro do root layout.
 			rootLayout.setCenter(clienteOverview);
 
-			// Dá ao controlador acesso à the main app.
 			mainViewController = loader.getController();
 			mainViewController.setMainApp(this);
 
@@ -168,12 +165,10 @@ public class MainApp extends Application {
 
 	public boolean showClienteDetails(Cliente cliente, boolean teste) {
 		try {
-			// Carrega o arquivo fxml e cria um novo stage para a janela popup.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/DetailsDialog.fxml"));
 			AnchorPane page = (AnchorPane) loader.load();
 
-			// Cria o palco dialogStage.
 			Stage dialogStage = new Stage();
 			if (teste) {
 				dialogStage.setTitle("Detalhes Cliente");
@@ -188,14 +183,12 @@ public class MainApp extends Application {
 			dialogStage.setScene(scene);
 			dialogStage.getIcons().add(new Image("file:resources/images/logo.png"));
 
-			// Define a pessoa no controller.
 			DetailsDialogController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setCliente(cliente);
 			controller.setMainApp(this);
 			controller.setTipo(teste);
 
-			// Mostra a janela e espera até o usuário fechar.
 			dialogStage.showAndWait();
 
 			return true;
@@ -267,6 +260,7 @@ public class MainApp extends Application {
 	public void stop() throws Exception {
 		save();
 		System.exit(0);
+		driver.close();
 		super.stop();
 	}
 

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.TimerTask;
 
@@ -19,7 +19,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.log4j.config.PropertyPrinter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -55,7 +54,7 @@ public class Agendador extends TimerTask {
 			id = database.get("id-edit").getRawBody();
 			idEdit = id.substring(1, id.length() - 1);
 			id = database.get("id-conexao").getRawBody();
-			idConexao = id.substring(1, id.length()-1);
+			idConexao = id.substring(1, id.length() - 1);
 		} catch (FirebaseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -65,60 +64,64 @@ public class Agendador extends TimerTask {
 		}
 		System.out.println("Não começou");
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>(mainApp.getClienteData());
-		loop:
-		for (Cliente cliente : clientes) {
+		loop: for (Cliente cliente : clientes) {
+			if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 18) {
+				break;
+			}
 			int contador = 0;
 			long dias = ChronoUnit.DAYS.between(LocalDate.now(), cliente.getData());
 			System.out.println(cliente.getName() + " " + dias);
-			if (dias <= 2) {
+			if (dias <= 5) {
 				driver.get("https://web.whatsapp.com/send?phone=+55" + cliente.getNumber());
 				while (true) {
 					try {
+						System.out.println("1");
 						Thread.sleep(1000);
-						List<WebElement> text = driver.findElements(By.className(idEdit));
-						try {
-							WebElement aviso = driver.findElement(By.xpath(idInvalido));
-							if (aviso != null) {
-								if (aviso.getText().contains("url é inválido")) {
-									mainApp.getClienteFailData().add(cliente);
-									mainApp.getClienteData().remove(cliente);
-
-									break;
-								}
+						WebElement aviso = driver.findElement(By.xpath(idInvalido));
+						if (aviso != null) {
+							if (aviso.getText().contains("url é inválido")) {
+								mainApp.getClienteFailData().add(cliente);
+								mainApp.getClienteData().remove(cliente);
+								System.out.println("3");
+								break;
 							}
-						} catch (Exception ex) {
-							if (contador == 200) {
-								contador = 0;
-								WebElement aviso = driver.findElement(By.className(idConexao));
-								if (aviso != null) {
-									Alert alert = new Alert(AlertType.WARNING);
-									alert.setTitle("Erro ao enviar mensagem");
-									alert.setHeaderText("Verifique se o celular esta conectado");
-
-									alert.showAndWait();
-								} else {
-									sendMail();
-									Alert alert = new Alert(AlertType.WARNING);
-									alert.setTitle("Os identificadores de elemento do WhatsApp/nforam atualizas");
-									alert.setHeaderText("Os desenvolvedores já foram avisados e estão/ncorrigindo o problema!");
-
-									alert.showAndWait();
-									break loop;
-								}
-								
-								
-							}
-							contador++;
 						}
-						if (text.size() > 0) {
-							text.get(0).sendKeys(cliente.getMessage());
-							text.get(0).sendKeys(Keys.ENTER);
+
+						System.out.println("2");
+						WebElement text = driver.findElement(By.className(idEdit));
+						if (text != null) {
+							System.out.println("6");
 							Thread.sleep(5000);
+							text.sendKeys(cliente.getMessage());
+							text.sendKeys(Keys.ENTER);
 							mainApp.getClienteData().remove(cliente);
 							break;
 						}
+					} catch (NoSuchElementException e) {
+						if (contador == 200) {
+							contador = 0;
+							WebElement aviso = driver.findElement(By.className(idConexao));
+							if (aviso != null) {
+								Alert alert = new Alert(AlertType.WARNING);
+								alert.setTitle("Erro ao enviar mensagem");
+								alert.setHeaderText("Verifique se o celular esta conectado");
+								System.out.println("5");
+								alert.showAndWait();
+							} else {
+								sendMail();
+								Alert alert = new Alert(AlertType.WARNING);
+								alert.setTitle("Os identificadores de elemento do WhatsApp/nforam atualizas");
+								alert.setHeaderText(
+										"Os desenvolvedores já foram avisados e estão/ncorrigindo o problema!");
+
+								alert.showAndWait();
+								break loop;
+							}
+
+						}
+						contador++;
 					} catch (Exception e) {
-						e.printStackTrace();
+						System.out.println();
 					}
 				}
 			}
@@ -153,7 +156,6 @@ public class Agendador extends TimerTask {
 			message.setSubject("WebZapZap - " + s.format(Calendar.getInstance().getTime()));// Assunto
 			message.setText("Come on brow, what are you doing?? webzapzap need of one manutezation");
 			Transport.send(message);
-
 
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
